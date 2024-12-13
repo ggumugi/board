@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { registerUser } from '../api/boardApi'
+import { registerUser, loginUser, logoutUser } from '../api/boardApi'
 
+// 회원가입
 export const registerUserThunk = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue }) => {
    try {
       const response = await registerUser(userData)
@@ -10,27 +11,78 @@ export const registerUserThunk = createAsyncThunk('auth/registerUser', async (us
    }
 })
 
+// 로그인
+export const loginUserThunk = createAsyncThunk('auth/loginUser', async (credentials, { rejectWithValue }) => {
+   try {
+      const response = await loginUser(credentials)
+      return response.data.user
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '로그인 실패')
+   }
+})
+
+// 로그아웃
+// _ 의미 다시 되새기고 기억하기(사용처 꼭 확인)
+export const logoutUserThunk = createAsyncThunk('auth/logoutUser', async (_, { rejectWithValue }) => {
+   try {
+      const response = await logoutUser()
+      return response.data
+   } catch (error) {
+      return rejectWithValue(error.response?.data?.message || '로그아웃 실패')
+   }
+})
+
 const authSlice = createSlice({
    name: 'auth',
    initialState: {
       user: null,
       loading: false,
       error: null,
+      isAuthenticated: false, // store 에 저장할 로그인 유무
    },
    reducers: {},
    extraReducers: (builder) => {
-      builder.addCase(registerUserThunk.pending, (state) => {
-         state.loading = true
-         state.error = null
-      })
-      builder.addCase(registerUserThunk.fulfilled, (state, action) => {
-         state.loading = false
-         state.user = action.payload
-      })
-      builder.addCase(registerUserThunk.rejected, (state, action) => {
-         state.loading = true
-         state.error = action.payload
-      })
+      builder
+         .addCase(registerUserThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(registerUserThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.user = action.payload
+         })
+         .addCase(registerUserThunk.rejected, (state, action) => {
+            state.loading = true
+            state.error = action.payload
+         })
+      builder
+         .addCase(loginUserThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(loginUserThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.isAuthenticated = true // 로그인 유무 변경
+            state.user = action.payload
+         })
+         .addCase(loginUserThunk.rejected, (state, action) => {
+            state.loading = true
+            state.error = action.payload
+         })
+      builder
+         .addCase(logoutUserThunk.pending, (state) => {
+            state.loading = true
+            state.error = null
+         })
+         .addCase(logoutUserThunk.fulfilled, (state, action) => {
+            state.loading = false
+            state.isAuthenticated = false // 로그인 유무 변경
+            state.user = action.payload
+         })
+         .addCase(logoutUserThunk.rejected, (state, action) => {
+            state.loading = true
+            state.error = action.payload
+         })
    },
 })
 

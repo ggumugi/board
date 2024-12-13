@@ -1,6 +1,9 @@
 const express = require('express')
-const path = require('path') // 경로 처리 유틸리티
-const morgan = require('morgan') // HTTP 요청 로깅 미들웨어
+const path = require('path')
+const morgan = require('morgan')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+const passport = require('passport')
 
 require('dotenv').config()
 const cors = require('cors')
@@ -9,8 +12,10 @@ const cors = require('cors')
 const indexRouter = require('./routes')
 const authRouter = require('./routes/auth')
 const { sequelize } = require('./models')
+const passportConfig = require('./passport') // index.js
 
 const app = express()
+passportConfig()
 app.set('port', process.env.PORT || 8002)
 
 sequelize
@@ -32,8 +37,23 @@ app.use(morgan('dev'))
 app.use(express.static(path.join(__dirname, 'uploads')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser(process.env.COOKIE_SECRET))
 
+// 세션
+app.use(
+   session({
+      resave: false, // 자동 재저장
+      saveUninitialized: true, // 빈 세션 저장
+      secret: process.env.COOKIE_SECRET, // 암호화 키
+      cookie: {
+         httpOnly: true, // 헷갈리지 말기! javascript 쿠키 접근성
+         secure: false, // false : http 사용 허가
+      },
+   })
+)
 //라우터 등록
+app.use(passport.initialize())
+app.use(passport.session())
 app.use('/', indexRouter)
 app.use('/auth', authRouter)
 
@@ -47,7 +67,7 @@ app.use((err, req, res, next) => {
    const statusCode = err.status || 500
    const errorMessage = err.message || '서버 내부 오류'
 
-   req.satus(statusCode).json({
+   res.status(statusCode).json({
       success: false,
       message: errorMessage,
       error: err,
