@@ -37,6 +37,23 @@ app.use(express.urlencoded({ extended: false }))
 app.use('/', indexRouter)
 app.use('/auth', authRouter)
 
+app.use((req, res, next) => {
+   const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`)
+   error.status = 404
+   next(error)
+})
+
+app.use((err, req, res, next) => {
+   const statusCode = err.status || 500
+   const errorMessage = err.message || '서버 내부 오류'
+
+   req.satus(statusCode).json({
+      success: false,
+      message: errorMessage,
+      error: err,
+   })
+})
+
 app.options('*', cors()) /
    app.listen(app.get('port'), () => {
       console.log(app.get('port'), '번 포트에서 대기중')
