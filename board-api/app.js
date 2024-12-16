@@ -4,13 +4,13 @@ const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const passport = require('passport')
-
 require('dotenv').config()
 const cors = require('cors')
 
 // 라우터 밑 기타모듈 불러오기
 const indexRouter = require('./routes')
 const authRouter = require('./routes/auth')
+const boardRouter = require('./routes/board')
 const { sequelize } = require('./models')
 const passportConfig = require('./passport') // index.js
 
@@ -56,6 +56,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 app.use('/', indexRouter)
 app.use('/auth', authRouter)
+app.use('/board', boardRouter)
 
 app.use((req, res, next) => {
    const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`)
