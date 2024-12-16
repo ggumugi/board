@@ -1,13 +1,37 @@
 import React from 'react'
 import { Container } from '@mui/material'
-import { Link } from 'react-router-dom'
-const LoginPage = () => {
+import { Link, useNavigate } from 'react-router-dom'
+import { useCallback } from 'react'
+import { useDispatch } from 'react-redux'
+import { logoutUserThunk } from '../features/authSlice'
+const Home = ({ isAuthenticated, user }) => {
+   const dispatch = useDispatch()
+   const navigate = useNavigate()
+   const handleLogout = useCallback(() => {
+      dispatch(logoutUserThunk())
+         .unwrap()
+         .then(() => {
+            navigate('/')
+         })
+         .catch((err) => {
+            alert(err)
+         })
+   }, [dispatch, navigate])
    return (
       <Container maxWidth="md">
          <h1>홈입니다</h1>
-         <Link to="/login">로그인</Link>
+         {isAuthenticated ? (
+            <>
+               <p>{user?.nick} 님, 환영합니다.</p>
+               <button onClick={handleLogout}>로그아웃</button>
+            </>
+         ) : (
+            <>
+               <Link to="/login">로그인</Link>
+            </>
+         )}
       </Container>
    )
 }
 
-export default LoginPage
+export default Home

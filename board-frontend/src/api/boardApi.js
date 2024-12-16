@@ -43,3 +43,13 @@ export const logoutUser = async () => {
       throw err // 리퀘스트 할 때 오류 발생시 에러를 registerUser()함수를 실행한 곳으로 던짐
    }
 }
+
+export const checkAuthStatus = async () => {
+   try {
+      const response = await boardApi.get('/auth/status')
+      return response
+   } catch (err) {
+      console.error(`API Request 오류 : ${err.message}`)
+      throw err
+   }
+}
