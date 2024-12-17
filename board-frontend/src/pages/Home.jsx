@@ -1,12 +1,19 @@
-import React from 'react'
-import { Container } from '@mui/material'
+import { Container, Typography, Pagination, Stack } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import { useCallback } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { logoutUserThunk } from '../features/authSlice'
+import { fetchBoardsThunk } from '../features/boardSlice'
+import BoardItem from '../components/board/BoardItem'
 const Home = ({ isAuthenticated, user }) => {
+   const [page, setPage] = useState(1)
    const dispatch = useDispatch()
    const navigate = useNavigate()
+   const { boards, pagination, loading, error } = useSelector((state) => state.boards)
+
+   useEffect(() => {
+      dispatch(fetchBoardsThunk(page))
+   }, [dispatch, page])
    const handleLogout = useCallback(() => {
       dispatch(logoutUserThunk())
          .unwrap()
@@ -17,6 +24,9 @@ const Home = ({ isAuthenticated, user }) => {
             alert(err)
          })
    }, [dispatch, navigate])
+   const handlePageChange = useCallback((event, value) => {
+      setPage(value)
+   }, [])
    return (
       <Container maxWidth="md">
          <h1>홈입니다</h1>
@@ -30,6 +40,22 @@ const Home = ({ isAuthenticated, user }) => {
             <>
                <Link to="/login">로그인</Link>
             </>
+         )}
+         {boards.length > 0 ? (
+            <>
+               {boards.map((board) => (
+                  <BoardItem key={board.id} board={board} isAuthenticated={isAuthenticated} user={user} />
+               ))}
+               <Stack spacing={2} sx={{ mt: 3, alignItems: 'center' }}>
+                  <Pagination count={pagination.totalPages} page={page} onChange={handlePageChange} />
+               </Stack>
+            </>
+         ) : (
+            !loading && (
+               <Typography variant="body1" align="center">
+                  게시물이 없습니다.
+               </Typography>
+            )
          )}
       </Container>
    )

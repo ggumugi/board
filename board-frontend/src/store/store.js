@@ -5,7 +5,7 @@ import boardReducer from '../features/boardSlice'
 const store = configureStore({
    reducer: {
       auth: authReducer,
-      board: boardReducer,
+      boards: boardReducer,
    },
 })
 

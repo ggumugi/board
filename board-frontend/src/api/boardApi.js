@@ -109,3 +109,13 @@ export const getBoardById = async (id) => {
       throw err
    }
 }
+// 전체 게시물 가져오기
+export const getBoards = async (page) => {
+   try {
+      const response = await boardApi.get(`/board?page=${page}`)
+      return response
+   } catch (err) {
+      console.error(`API Request 오류 : ${err.message}`)
+      throw err
+   }
+}

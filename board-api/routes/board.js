@@ -168,6 +168,44 @@ router.get('/:id', async (req, res) => {
 })
 
 // 전체 게시물 불러오기(페이징 기능)
-router.get('/', async (req, res) => {})
+router.get('/', async (req, res) => {
+   try {
+      const page = parseInt(req.query.page, 10) || 1
+      const limit = parseInt(req.query.limit, 10) || 4
+      const offset = (page - 1) * limit
+
+      const count = await Board.count()
+
+      const boards = await Board.findAll({
+         limit,
+         offset,
+         order: [['createdAt', 'DESC']],
+         include: [
+            {
+               model: User,
+               attributes: ['id', 'nick', 'email'],
+            },
+         ],
+      })
+      res.json({
+         success: true,
+         boards,
+         pagination: {
+            totalboards: count,
+            currentPage: page,
+            totalPages: Math.ceil(count / limit),
+            limit,
+         },
+         message: '전체 게시물 리스트 조회',
+      })
+   } catch (err) {
+      console.error(err)
+      res.status(500).json({
+         success: false,
+         message: '게시물 조회 실패',
+         error: err,
+      })
+   }
+})
 
 module.exports = router
