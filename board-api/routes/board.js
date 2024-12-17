@@ -52,6 +52,7 @@ router.post('/', isLoggedIn, upload.single('img'), async (req, res) => {
          success: true,
          board: {
             id: board.id,
+            title: board.title,
             comment: board.comment,
             img: board.img,
             UserId: board.UserId,
@@ -95,7 +96,7 @@ router.put('/:id', isLoggedIn, async (req, res) => {
       })
       res.json({
          success: true,
-         post: updatedBoard,
+         board: updatedBoard,
          message: '게시물이 성공적으로 수정되었습니다.',
       })
    } catch (err) {
@@ -156,7 +157,7 @@ router.get('/:id', async (req, res) => {
          board: board,
          message: '게시물 조회',
       })
-   } catch (error) {
+   } catch (err) {
       console.error(err)
       res.status(500).json({
          success: false,

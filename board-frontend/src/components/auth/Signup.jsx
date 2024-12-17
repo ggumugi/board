@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { registerUserThunk } from '../../features/authSlice'
+import { Link } from 'react-router-dom'
 
 const Signup = () => {
    const [email, setEmail] = useState('')
@@ -33,7 +34,12 @@ const Signup = () => {
    }, [email, nick, password, confirmPassword, dispatch])
 
    if (isSignupComplete) {
-      return <h1>회원가입이 완료되었습니다.</h1>
+      return (
+         <>
+            <h1>회원가입이 완료되었습니다.</h1>
+            <Link to="/">홈으로</Link>
+         </>
+      )
    }
    return (
       <div>

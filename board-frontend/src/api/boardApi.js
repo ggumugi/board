@@ -53,3 +53,59 @@ export const checkAuthStatus = async () => {
       throw err
    }
 }
+
+// 게시물 등록
+export const createBoard = async (boardData) => {
+   try {
+      //postData = 등록할 게시물 데이터가 담겨있는 json 객체
+
+      const config = {
+         headers: {
+            'Content-Type': 'multipart/form-data', // 데이터 형식 지정
+         },
+      }
+      const response = await boardApi.post('/board', boardData, config)
+      return response
+   } catch (err) {
+      console.error(`API Request 오류 : ${err.message}`)
+      throw err
+   }
+}
+
+// 게시물 수정
+export const updateBoard = async (id, boardData) => {
+   try {
+      //postData = 등록할 게시물 데이터가 담겨있는 json 객체
+
+      const config = {
+         headers: {
+            'Content-Type': 'multipart/form-data', // 데이터 형식 지정
+         },
+      }
+      const response = await boardApi.put(`/board/${id}`, boardData, config)
+      return response
+   } catch (err) {
+      console.error(`API Request 오류 : ${err.message}`)
+      throw err
+   }
+}
+// 게시물 삭제
+export const deleteBoard = async (id) => {
+   try {
+      const response = await boardApi.delete(`/board/${id}`)
+      return response
+   } catch (err) {
+      console.error(`API Request 오류 : ${err.message}`)
+      throw err
+   }
+}
+// 특정 게시물 가져오기
+export const getBoardById = async (id) => {
+   try {
+      const response = await boardApi.get(`/board/${id}`)
+      return response
+   } catch (err) {
+      console.error(`API Request 오류 : ${err.message}`)
+      throw err
+   }
+}

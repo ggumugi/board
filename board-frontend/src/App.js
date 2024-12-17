@@ -3,6 +3,7 @@ import './styles/common.css'
 import SignupPage from './pages/SignupPage'
 import Login from './pages/Login'
 import Home from './pages/Home'
+import BoardCreatePage from './pages/BoardCreatePage'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkAuthStatusThunk } from './features/authSlice'
 import { useEffect } from 'react'
@@ -23,6 +24,7 @@ function App() {
             <Route path="/login" element={<Login />} />
 
             <Route path="/signup" element={<SignupPage />} />
+            <Route path="/board/create" element={<BoardCreatePage />} />
          </Routes>
       </>
    )
