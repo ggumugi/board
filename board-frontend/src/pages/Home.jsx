@@ -9,7 +9,7 @@ const Home = ({ isAuthenticated, user }) => {
    const [page, setPage] = useState(1)
    const dispatch = useDispatch()
    const navigate = useNavigate()
-   const { boards, pagination, loading, error } = useSelector((state) => state.boards)
+   const { boards, pagination, loading } = useSelector((state) => state.boards)
 
    useEffect(() => {
       dispatch(fetchBoardsThunk(page))

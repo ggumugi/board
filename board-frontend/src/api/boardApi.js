@@ -119,3 +119,13 @@ export const getBoards = async (page) => {
       throw err
    }
 }
+
+// export const getBoardsById = async (id, page) => {
+//    try {
+//       const response = await boardApi.get(`/board/${id}?page=${page}`)
+//       return response
+//    } catch (err) {
+//       console.error(`API Request 오류 : ${err.message}`)
+//       throw err
+//    }
+// }

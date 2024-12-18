@@ -21,9 +21,14 @@ const upload = multer({
          cb(null, 'uploads/')
       },
       filename(req, file, cb) {
-         const ext = path.extname(file.originalname)
+         const decodedFileName = decodeURIComponent(file.originalname) //파일명 디코딩(한글 파일명 깨짐 방지)
+         const ext = path.extname(decodedFileName) //확장자 추출
+         const basename = path.basename(decodedFileName, ext) //확장자 제거한 파일명 추출
 
-         cb(null, path.basename(file.originalname, ext) + Date.now() + ext)
+         // 파일명 설정: 기존이름 + 업로드 날짜시간 + 확장자
+         // dog.jpg
+         // ex) dog + 1231342432443 + .jpg
+         cb(null, basename + Date.now() + ext)
       },
    }),
 
@@ -69,7 +74,7 @@ router.post('/', isLoggedIn, upload.single('img'), async (req, res) => {
 })
 
 // 게시물 수정 - 로그인 유무 확인 후 게시물의 제목, 내용, 이미지 수정
-router.put('/:id', isLoggedIn, async (req, res) => {
+router.put('/:id', isLoggedIn, upload.single('img'), async (req, res) => {
    try {
       const board = await Board.findOne({ where: { id: req.params.id, UserId: req.user.id } })
       if (!board) {

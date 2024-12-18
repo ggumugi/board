@@ -1,11 +1,9 @@
 import BoardForm from '../components/board/BoardForm'
-import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { createBoardThunk } from '../features/boardSlice'
 import { useCallback } from 'react'
 
 const BoardCreatePage = () => {
-   const navigate = useNavigate()
    const dispatch = useDispatch()
 
    const handleSubmit = useCallback(
@@ -22,7 +20,7 @@ const BoardCreatePage = () => {
                alert('게시물을 등록할 수 없습니다.')
             })
       },
-      [dispatch, navigate]
+      [dispatch]
    )
    return (
       <div>
