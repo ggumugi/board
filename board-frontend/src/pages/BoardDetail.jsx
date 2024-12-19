@@ -37,7 +37,7 @@ const BoardDetail = ({ isAuthenticated, user }) => {
       <>
          {board && board.User.id && (
             <Card style={{ margin: '60px 0' }}>
-               <CardMedia sx={{ height: 600 }} image={`${process.env.REACT_APP_API_URL}${board.img}`} title={board.comment} />
+               <CardMedia sx={{ height: 600 }} image={`${process.env.REACT_APP_API_URL}${board.img}`} title={board.title} />
                <CardContent>
                   <Link to={`/my/${board.User.id}`} style={{ textDecoration: 'none' }}>
                      <Typography sx={{ color: 'primary.main' }}>@{board.User.nick} </Typography>

@@ -11,6 +11,7 @@ const cors = require('cors')
 const indexRouter = require('./routes')
 const authRouter = require('./routes/auth')
 const boardRouter = require('./routes/board')
+const pageRouter = require('./routes/page')
 const { sequelize } = require('./models')
 const passportConfig = require('./passport') // index.js
 
@@ -57,6 +58,7 @@ app.use(passport.session())
 app.use('/', indexRouter)
 app.use('/auth', authRouter)
 app.use('/board', boardRouter)
+app.use('/page', pageRouter)
 
 app.use((req, res, next) => {
    const error = new Error(`${req.method} ${req.url} 라우터가 없습니다.`)

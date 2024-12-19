@@ -120,12 +120,24 @@ export const getBoards = async (page) => {
    }
 }
 
-// export const getBoardsById = async (id, page) => {
-//    try {
-//       const response = await boardApi.get(`/board/${id}?page=${page}`)
-//       return response
-//    } catch (err) {
-//       console.error(`API Request 오류 : ${err.message}`)
-//       throw err
-//    }
-// }
+// 내 프로필 가져오기
+export const getProfile = async () => {
+   try {
+      const response = await boardApi.get(`/page/profile`)
+      return response
+   } catch (err) {
+      console.error(`API Request 오류 : ${err.message}`)
+      throw err
+   }
+}
+
+// 특정 사용자 프로필 가져오기
+export const getProfileId = async (id) => {
+   try {
+      const response = await boardApi.get(`/page/profile/${id}`)
+      return response
+   } catch (err) {
+      console.error(`API Request 오류 : ${err.message}`)
+      throw err
+   }
+}

@@ -53,7 +53,7 @@ export const fetchBoardsThunk = createAsyncThunk('boards/fetchBoards', async (pa
    }
 })
 
-// 특정 인물 게시물 리스트 가져오기
+// //특정 인물 게시물 리스트 가져오기
 // export const fetchBoardsByIdThunk = createAsyncThunk('boards/fetchBoardsById', async ({ userid, page }, { rejectWithValue }) => {
 //    try {
 //       const response = await getBoardsById(id, page)

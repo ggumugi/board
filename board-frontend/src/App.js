@@ -6,7 +6,7 @@ import Home from './pages/Home'
 import BoardCreatePage from './pages/BoardCreatePage'
 import BoardEditPage from './pages/BoardEditPage'
 import BoardDetail from './pages/BoardDetail'
-// import BoardMy from './pages/BoardMy'
+import BoardMy from './pages/BoardMy'
 import { useDispatch, useSelector } from 'react-redux'
 import { checkAuthStatusThunk } from './features/authSlice'
 import { useEffect } from 'react'
@@ -28,7 +28,8 @@ function App() {
             <Route path="/board/create" element={<BoardCreatePage />} />
             <Route path="/board/edit/:id" element={<BoardEditPage />} />
             <Route path="/board/detail/:id" element={<BoardDetail isAuthenticated={isAuthenticated} user={user} />} />
-            {/* <Route path="/my/:id" element={<BoardMy isAuthenticated={isAuthenticated} />} /> */}
+            <Route path="/my" element={<BoardMy />} />
+            <Route path="/my/:id" element={<BoardMy />} />
          </Routes>
       </>
    )
