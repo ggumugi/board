@@ -35,6 +35,8 @@ const Home = ({ isAuthenticated, user }) => {
                <p>{user?.nick} 님, 환영합니다.</p>
                <button onClick={handleLogout}>로그아웃</button>
                <Link to="/board/create">글쓰기</Link>
+               <br />
+               <Link to="/my">내 정보</Link>
             </>
          ) : (
             <>

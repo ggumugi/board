@@ -15,6 +15,7 @@ export const getProfileThunk = createAsyncThunk('page/getProfile', async (_, { r
 export const getProfileIdThunk = createAsyncThunk('page/getProfileId', async (id, { rejectWithValue }) => {
    try {
       const response = await getProfileId(id)
+      console.log(response)
       return response.data.user
    } catch (err) {
       return rejectWithValue(err.response?.data?.message || '프로필 정보 불러오기 실패')
