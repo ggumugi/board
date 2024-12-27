@@ -26,6 +26,7 @@ const BoardDetail = ({ isAuthenticated, user }) => {
       },
       [dispatch]
    )
+
    useEffect(() => {
       dispatch(fetchBoardByIdThunk(id))
    }, [dispatch, id])
